@@ -14,6 +14,7 @@ import com.geeksville.mesh.model.ChannelOption
 import com.geeksville.mesh.model.UIViewModel
 import com.geeksville.mesh.service.MeshService
 import com.geeksville.util.exceptionToSnackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,6 +55,8 @@ class AdvancedSettingsFragment : ScreenFragment("Advanced Settings"), Logging {
             binding.positionBroadcastSwitch.isEnabled = connected
             binding.lsSleepSwitch.isEnabled = connected
             binding.isAlwaysPoweredSwitch.isEnabled = connected
+            binding.shutdownButton.isEnabled = connected
+            binding.rebootButton.isEnabled = connected
         })
 
         binding.positionBroadcastPeriodEditText.on(EditorInfo.IME_ACTION_DONE) {
@@ -114,6 +117,28 @@ class AdvancedSettingsFragment : ScreenFragment("Advanced Settings"), Logging {
                 model.isAlwaysPowered = isChecked
                 debug("User changed isAlwaysPowered to $isChecked")
             }
+        }
+
+        binding.shutdownButton.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage("${getString(R.string.shutdown)}?")
+                .setNeutralButton(R.string.cancel) { _, _ ->
+                }
+                .setPositiveButton(getString(R.string.okay)) { _, _ ->
+                    model.requestShutdown()
+                }
+                .show()
+        }
+
+        binding.rebootButton.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage("${getString(R.string.reboot)}?")
+                .setNeutralButton(R.string.cancel) { _, _ ->
+                }
+                .setPositiveButton(getString(R.string.okay)) { _, _ ->
+                    model.requestReboot()
+                }
+                .show()
         }
     }
 }

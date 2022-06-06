@@ -274,6 +274,14 @@ class UIViewModel @Inject constructor(
             }
     }
 
+    fun requestShutdown() {
+        meshService?.requestShutdown(DataPacket.ID_LOCAL)
+    }
+
+    fun requestReboot() {
+        meshService?.requestReboot(DataPacket.ID_LOCAL)
+    }
+
     /**
      * Write the persisted packet data out to a CSV file in the specified location.
      */
